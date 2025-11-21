@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crown Snake - Leaderboard</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .leaderboard-container {
+            width: 800px;
+            max-height: 85vh;
+            /* Limit height */
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #00ff88;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+            padding: 40px;
+            text-align: center;
+            border-radius: 10px;
+            display: flex;
+            /* Flex layout */
+            flex-direction: column;
+        }
+
+        h1 {
+            color: #00ff88;
+            text-shadow: 0 0 10px #00ff88;
+            margin-bottom: 20px;
+            flex-shrink: 0;
+            /* Don't shrink header */
+        }
+
+        .table-wrapper {
+            overflow-y: auto;
+            /* Scrollable area */
+            flex-grow: 1;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #333;
+            /* Visual separation */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #333;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        th {
+            color: #00ffff;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            position: sticky;
+            /* Sticky header */
+            top: 0;
+            background: rgba(0, 0, 0, 0.9);
+            /* Opaque background for header */
+            z-index: 1;
+        }
+
+        td {
+            color: #fff;
+            font-size: 1.1rem;
+        }
+
+        tr:nth-child(1) td {
+            color: #ffd700;
+            text-shadow: 0 0 10px #ffd700;
+            font-weight: bold;
+        }
+
+        /* Gold */
+        tr:nth-child(2) td {
+            color: #c0c0c0;
+            text-shadow: 0 0 10px #c0c0c0;
+            font-weight: bold;
+        }
+
+        /* Silver */
+        tr:nth-child(3) td {
+            color: #cd7f32;
+            text-shadow: 0 0 10px #cd7f32;
+            font-weight: bold;
+        }
+
+        /* Bronze */
+
+        .rank-col {
+            width: 10%;
+            text-align: center;
+        }
+
+        .name-col {
+            width: 50%;
+        }
+
+        .score-col {
+            width: 20%;
+            text-align: right;
+        }
+
+        .date-col {
+            width: 20%;
+            text-align: right;
+            font-size: 0.9rem;
+            color: #888;
+        }
+
+        .back-btn {
+            background: transparent;
+            color: #00ff88;
+            border: 2px solid #00ff88;
+            padding: 10px 30px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            cursor: pointer;
+            text-transform: uppercase;
+            box-shadow: 0 0 10px #00ff88;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-block;
+            flex-shrink: 0;
+            /* Don't shrink button */
+            align-self: center;
+        }
+
+        .back-btn:hover {
+            background: #00ff88;
+            color: #000;
+            box-shadow: 0 0 20px #00ff88;
+        }
+
+        /* Scrollbar Styling */
+        .table-wrapper::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .table-wrapper::-webkit-scrollbar-track {
+            background: #111;
+        }
+
+        .table-wrapper::-webkit-scrollbar-thumb {
+            background: #00ff88;
+            border-radius: 4px;
+        }
+
+        .table-wrapper::-webkit-scrollbar-thumb:hover {
+            background: #00cc66;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="leaderboard-container">
+        <h1>TOP 20 LEADERBOARD</h1>
+
+        <div class="table-wrapper">
+            <table id="leaderboard-table">
+                <thead>
+                    <tr>
+                        <th class="rank-col">RANK</th>
+                        <th class="name-col">PLAYER</th>
+                        <th class="score-col">SCORE</th>
+                        <th class="date-col">DATE</th>
+                    </tr>
+                </thead>
+                <tbody id="leaderboard-body">
+                    <!-- Scores will be inserted here -->
+                </tbody>
+            </table>
+        </div>
+
+        <a href="index.html" class="back-btn">BACK TO GAME</a>
+    </div>
+
+    <script>
+        const leaderboardBody = document.getElementById('leaderboard-body');
+        const leaderboard = JSON.parse(localStorage.getItem('crownSnakeLeaderboard')) || [];
+
+        if (leaderboard.length === 0) {
+            leaderboardBody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#555;">NO SCORES YET</td></tr>';
+        } else {
+            leaderboard.forEach((entry, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="rank-col">#${index + 1}</td>
+                    <td class="name-col">${entry.name}</td>
+                    <td class="score-col">${entry.score}</td>
+                    <td class="date-col">${entry.date}</td>
+                `;
+                leaderboardBody.appendChild(row);
+            });
+        }
+    </script>
+</body>
+
+</html>

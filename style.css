@@ -1,0 +1,290 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
+:root {
+    --bg-color: #050505;
+    --grid-color: #1a1a1a;
+    --snake-color: #00ff88;
+    --snake2-color: #00ffff;
+    /* Cyan for Player 2 */
+    --food-apple: #ff0055;
+    --food-orange: #ffaa00;
+    --food-grape: #aa00ff;
+    --food-banana: #ffff00;
+    --text-color: #ffffff;
+    --glow-strength: 10px;
+}
+
+.input-group {
+    margin-bottom: 20px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+input {
+    background: rgba(0, 0, 0, 0.5);
+    border: 2px solid #333;
+    color: white;
+    padding: 10px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1rem;
+    text-align: center;
+    outline: none;
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
+}
+
+#p1NameInput {
+    border-color: var(--snake-color);
+    box-shadow: 0 0 5px var(--snake-color);
+}
+
+#p2NameInput {
+    border-color: var(--snake2-color);
+    box-shadow: 0 0 5px var(--snake2-color);
+}
+
+input:focus {
+    box-shadow: 0 0 15px white;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #111;
+    background-image: url('background.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: white;
+    font-family: 'Orbitron', sans-serif;
+    overflow: hidden;
+}
+
+body::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    /* Dark overlay to make game pop */
+    z-index: -1;
+}
+
+.game-container {
+    position: relative;
+    text-align: center;
+}
+
+.score-board {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    width: 800px;
+    /* Match new canvas width */
+    text-shadow: 0 0 5px var(--snake-color);
+}
+
+#ui-layer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 800px;
+    margin: 0 auto 10px auto;
+}
+
+#score-board {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 10px 20px;
+    background: rgba(0, 0, 0, 0.8);
+    border: 2px solid #0ff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px #0ff;
+    font-size: 24px;
+    z-index: 10;
+}
+
+.icon-btn {
+    background: rgba(0, 0, 0, 0.8);
+    border: 2px solid #0ff;
+    border-radius: 50%;
+    color: #fff;
+    font-size: 24px;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    margin-left: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.icon-btn:hover {
+    background: #0ff;
+    color: #000;
+    box-shadow: 0 0 15px #0ff;
+}
+
+#countdown-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 20;
+    pointer-events: none;
+}
+
+#countdown-text {
+    font-size: 120px;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 0 0 20px #0ff, 0 0 40px #0ff;
+    animation: pulse 0.8s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.2);
+        opacity: 0.8;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.canvas-wrapper {
+    position: relative;
+    box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+    border: 2px solid #333;
+    width: 800px;
+    /* Explicit width */
+    height: 600px;
+    /* Explicit height */
+    margin: 0 auto;
+    /* Center it */
+}
+
+canvas {
+    background-color: rgba(26, 26, 26, 0.6);
+    /* Semi-transparent to show city background */
+    display: block;
+    /* Subtle grid pattern effect */
+    background-image:
+        linear-gradient(rgba(17, 17, 17, 0.5) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(17, 17, 17, 0.5) 1px, transparent 1px);
+    background-size: 20px 20px;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    /* More transparent */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* backdrop-filter: blur(2px); Removed fog */
+    transition: opacity 0.3s ease;
+    z-index: 100;
+    /* Ensure it's on top */
+}
+
+.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: var(--snake-color);
+    text-shadow: 0 0 10px var(--snake-color), 0 0 20px var(--snake-color);
+    letter-spacing: 2px;
+}
+
+p {
+    margin-bottom: 2rem;
+    font-size: 1.2rem;
+    color: #ccc;
+}
+
+button {
+    background: transparent;
+    color: var(--snake-color);
+    border: 2px solid var(--snake-color);
+    padding: 10px 30px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.2rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    box-shadow: 0 0 10px var(--snake-color);
+    text-shadow: 0 0 5px var(--snake-color);
+    transition: all 0.2s ease;
+}
+
+.mode-select {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.mode-btn {
+    opacity: 1;
+    border-color: var(--snake-color);
+    color: var(--snake-color);
+    box-shadow: 0 0 10px var(--snake-color);
+    text-shadow: 0 0 5px var(--snake-color);
+}
+
+.mode-btn.active {
+    background: #00ff88;
+    color: #000;
+    box-shadow: 0 0 20px #00ff88;
+}
+
+.mode-btn:hover {
+    opacity: 1;
+    background: #00ff88;
+    border-color: #00ff88;
+    color: #000;
+    box-shadow: 0 0 20px #00ff88;
+}
+
+button:hover {
+    background: #00ff88;
+    color: #000;
+    border-color: #00ff88;
+    box-shadow: 0 0 20px #00ff88;
+}
